@@ -1,6 +1,8 @@
+"use cache";
+
 import { APP_NAME } from "@/lib/constants";
 
-const Footer = () => {
+const Footer = async () => {
   const currentYear = new Date().getFullYear();
 
   return (
