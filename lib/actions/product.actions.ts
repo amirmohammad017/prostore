@@ -1,10 +1,9 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
-import { convertToPlainObject } from "../utils";
+import { prisma } from "../prisma";
 import { LATEST_PRODUCT_LIMIT } from "../constants";
 
-export const getLatestProducts = async () => {
+export async function getLatestProducts() {
   "use cache";
 
   const data = await prisma.product.findMany({
@@ -12,5 +11,10 @@ export const getLatestProducts = async () => {
     orderBy: { createdAt: "desc" },
   });
 
-  return convertToPlainObject(data);
-};
+  // Decimal -> string، چون type Product این دو فیلد را string می‌خواهد
+  return data.map((product) => ({
+    ...product,
+    price: product.price.toString(),
+    rating: product.rating.toString(),
+  }));
+}
