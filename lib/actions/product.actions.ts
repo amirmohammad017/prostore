@@ -12,3 +12,13 @@ export async function getLatestProducts() {
 
   return convertToPlainObject(products);
 }
+
+export async function getProductBySlug(slug: string) {
+  "use cache";
+
+  const product = await prisma.product.findFirst({
+    where: { slug },
+  });
+
+  return product ? convertToPlainObject(product) : null;
+}
